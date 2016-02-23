@@ -2,12 +2,14 @@
 
 """Testing a NN with flash cards."""
 
+# pylint: disable=unused-import
+
 import logging
 import itertools
 import numpy as np
 from keras.optimizers import SGD, RMSprop, Adagrad, Adadelta, Adam
 from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers.core import Dense, Dropout, Activation   # , Flatten
 
 
 class NNHyperParameters(object):
@@ -125,11 +127,12 @@ def main():
         # this iteration in the loop because we don't know if this combination
         # of hyper-parameters is supported
         try:
-            # run a NN with these hyper-parameters in this iteration
-            pass    # TODO
-        except Exception as dummy_exc:     # pylint: disable=broad-except
-            logging.error("Exception caught for hyper-parameters: %s",
-                          ' '.join(repr(combination)))
+            nn_model = create_nn_model(optimizer, objective, activation,
+                                       initialization, border_mode)
+            # TODO: train the NN
+        except Exception as exc:        # pylint: disable=broad-except
+            logging.error("Exception caught %s for hyper-parameters: %s",
+                          str(exc), ' '.join(repr(combination)))
 
 
 class FlashCards(object):
@@ -140,6 +143,45 @@ class FlashCards(object):
 
     # to make the flash-cards distinct to reinforce learning
     variation_in_width = 50
+
+
+def create_nn_model(optimizer, objective, activation, initialization,
+                    border_mode):
+    """Creates a MLP with the hyper-parameters given, taking as an inspiration
+    the Torch example for MNIST handwritten-digits in 'train-on-mnist.lua'.
+
+    Returns the NN (the MLP) schema built."""
+
+    logging.debug("Building a NN schema with %s %s %s %s %s", repr(optimizer),
+                  repr(objective), repr(activation), repr(initialization),
+                  repr(border_mode))
+
+    model = Sequential()
+
+    # FIXME
+    numb_input = (FlashCards.flash_card_dims[0] *
+                  FlashCards.flash_card_dims[1] / 256)
+
+    # not 10 digits to recognize as in MNIST (Torch's MNIST is an inspiration)
+    numb_output_classes = 100
+
+    # this NN is a MLP
+    model.add(Dense(numb_input/4, input_dim=numb_input, init=initialization))
+    model.add(Activation(activation))
+    model.add(Dropout(0.5))
+    model.add(Dense(numb_input/4, init=initialization))
+    model.add(Activation(activation))
+    model.add(Dropout(0.5))
+    model.add(Dense(numb_output_classes, init=initialization))
+    model.add(Activation(activation))
+
+    model.compile(loss=objective, optimizer=optimizer)
+
+    logging.debug("Built NN schema with %s %s %s %s %s", repr(optimizer),
+                  repr(objective), repr(activation), repr(initialization),
+                  repr(border_mode))
+
+    return model    # return the NN schema
 
 
 def generate_flash_cards(colors_seq, dest_flash_card_preffix):
