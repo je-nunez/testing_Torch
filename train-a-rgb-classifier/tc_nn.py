@@ -24,7 +24,10 @@ class NNHyperParameters(object):
     @classmethod
     def get_available_optimizers(cls):
         """Get all the available optimizers available from Theano or
-        TensorFlow through Keras."""
+        TensorFlow through Keras.
+
+        http://keras.io/optimizers/
+        """
 
         sgd = SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
         cls.available_keras_optimizers.append(sgd)
@@ -44,7 +47,10 @@ class NNHyperParameters(object):
     @classmethod
     def get_available_objectives(cls):
         """Get all the available objectives available from Theano or
-        TensorFlow through Keras."""
+        TensorFlow through Keras.
+
+        http://keras.io/objectives/
+        """
 
         cls.available_keras_objectives = ['mean_squared_error',
                                           'root_mean_squared_error',
@@ -59,7 +65,10 @@ class NNHyperParameters(object):
     @classmethod
     def get_available_activations(cls):
         """Get all the available activations available from Theano or
-        TensorFlow through Keras."""
+        TensorFlow through Keras.
+
+        http://keras.io/activations/
+        """
 
         cls.available_keras_activations = ['softplus',
                                            'relu',
@@ -71,7 +80,10 @@ class NNHyperParameters(object):
     @classmethod
     def get_available_initializations(cls):
         """Get all the available initializations available from Theano or
-        TensorFlow through Keras."""
+        TensorFlow through Keras.
+
+        http://keras.io/initializations/
+        """
 
         cls.available_keras_initializations = ['uniform',
                                                'lecun_uniform',
@@ -87,7 +99,10 @@ class NNHyperParameters(object):
     @classmethod
     def get_available_border_modes(cls):
         """Get all the available border-modes available from Theano or
-        TensorFlow through Keras."""
+        TensorFlow through Keras. It is for Convolutional layers:
+
+        http://keras.io/layers/convolutional/
+        """
 
         cls.available_keras_border_modes = ['valid', 'same']
 
