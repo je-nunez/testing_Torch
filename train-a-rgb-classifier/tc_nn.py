@@ -139,10 +139,12 @@ class FlashCards(object):
     """Container class for some flash-cards parameters."""
     # pylint: disable=too-few-public-methods
 
-    flash_card_dims = (500, 500)
+    # the flash cards don't need to squares, because we use vertical bars, not
+    # horizontal ones
+    flash_card_dims = (100, 20)
 
     # to make the flash-cards distinct to reinforce learning
-    variation_in_width = 50
+    variation_in_width = 10
 
 
 def create_nn_model(optimizer, objective, activation, initialization,
@@ -160,7 +162,7 @@ def create_nn_model(optimizer, objective, activation, initialization,
 
     # FIXME
     numb_input = (FlashCards.flash_card_dims[0] *
-                  FlashCards.flash_card_dims[1] / 256)
+                  FlashCards.flash_card_dims[1])
 
     # not 10 digits to recognize as in MNIST (Torch's MNIST is an inspiration)
     numb_output_classes = 100
@@ -198,10 +200,11 @@ def generate_flash_cards(colors_seq, dest_flash_card_preffix):
     uniform_width_of_each_bar = int(FlashCards.flash_card_dims[0] /
                                     len(colors_seq))
 
-    # the shifts in the column widths of each color bar inside the flash card
+    # the shifts in the column widths of each color bar inside the flash card:
+    # it has to be [-a, 0] instead of [a/2, a/2+1], otherwise there is a
+    # risk the last bar in the flash card is left without space
     shifts_to_reinforce_learning = list(
-        range(int(-FlashCards.variation_in_width/2),
-              int(FlashCards.variation_in_width/2) + 1)
+        range(-FlashCards.variation_in_width, 0)
     )
 
     shuffle(shifts_to_reinforce_learning)
