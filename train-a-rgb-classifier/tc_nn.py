@@ -7,6 +7,7 @@
 import logging
 import itertools
 import numpy as np
+from scipy.misc import imread, imresize
 from keras.optimizers import SGD, RMSprop, Adagrad, Adadelta, Adam
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation   # , Flatten
@@ -260,6 +261,16 @@ def generate_a_flash_card(colors_seq, color_bar_width, dest_flash_card_fname):
                        outline=colors_seq[-1], fill=colors_seq[-1])
 
     a_flash_card.save(dest_flash_card_fname, 'PNG')
+
+
+# Taken from keras/example/deep_dream.py, by Francois Chollet
+def preprocess_image(image_path, img_width, img_height):
+    """Util function to open, resize and format pictures into appropriate
+    tensors."""
+    img = imresize(imread(image_path), (img_width, img_height))
+    img = img.transpose((2, 0, 1)).astype('float64')
+    img = np.expand_dims(img, axis=0)
+    return img
 
 
 if __name__ == '__main__':
