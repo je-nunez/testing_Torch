@@ -7,7 +7,7 @@
 import logging
 import itertools
 import numpy as np
-from scipy.misc import imread, imresize
+from scipy.misc import imresize
 from keras.optimizers import SGD, RMSprop, Adagrad, Adadelta, Adam
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation   # , Flatten
@@ -234,7 +234,8 @@ def generate_flash_cards(colors_seq, dest_flash_card_preffix):
         generate_a_flash_card(colors_seq, column_width, dest_flash_card_fname)
 
 
-def generate_a_flash_card(colors_seq, color_bar_width, dest_flash_card_fname):
+def generate_a_flash_card(colors_seq, color_bar_width,
+                          dummy_dest_flash_card_fname):
     """Generate one flash card with the given colors seq, width of each color
     bar, to the given 'dest_flash_card_fname' PNG file."""
 
@@ -260,14 +261,19 @@ def generate_a_flash_card(colors_seq, color_bar_width, dest_flash_card_fname):
         draw.rectangle([(current_column, 0), FlashCards.flash_card_dims],
                        outline=colors_seq[-1], fill=colors_seq[-1])
 
-    a_flash_card.save(dest_flash_card_fname, 'PNG')
+    # don't save the flash card to file, but leave it on memory: this assumes
+    # that the returned PIL image will be passed directly to
+    # preprocess_image() below
+    # a_flash_card.save(dest_flash_card_fname, 'PNG')
+    return a_flash_card
 
 
-# Taken from keras/example/deep_dream.py, by Francois Chollet
-def preprocess_image(image_path, img_width, img_height):
-    """Util function to open, resize and format pictures into appropriate
+# Similar in idea as in keras/example/deep_dream.py, by Francois Chollet, but
+# working directly on PIL images instead of an image_path
+def preprocess_image(pil_image, to_img_width, to_img_height):
+    """Util function to resize and format pictures into appropriate
     tensors."""
-    img = imresize(imread(image_path), (img_width, img_height))
+    img = imresize(np.asarray(pil_image), (to_img_width, to_img_height))
     img = img.transpose((2, 0, 1)).astype('float64')
     img = np.expand_dims(img, axis=0)
     return img
