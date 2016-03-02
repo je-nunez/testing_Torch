@@ -143,8 +143,8 @@ def main():
         # this iteration in the loop because we don't know if this combination
         # of hyper-parameters is supported
         try:
-            nn_model = create_nn_model(optimizer, objective, activation,
-                                       initialization, border_mode)
+            nn_model = create_nn_model_mlp(optimizer, objective, activation,
+                                           initialization, border_mode)
             # TODO: train the NN
         except Exception as exc:        # pylint: disable=broad-except
             logging.error("Exception caught %s for hyper-parameters: %s",
@@ -163,8 +163,8 @@ class FlashCards(object):
     variation_in_width = 10
 
 
-def create_nn_model(optimizer, objective, activation, initialization,
-                    border_mode):
+def create_nn_model_mlp(optimizer, objective, activation, initialization,
+                        border_mode):
     """Creates a MLP with the hyper-parameters given, taking as an inspiration
     the Torch example for MNIST handwritten-digits in 'train-on-mnist.lua'.
 
