@@ -188,32 +188,45 @@ def create_nn_model_convolut(optimizer, objective, activation, initialization,
 
     model = Sequential()
     model.add(first_layer)
-    model.add(Convolution2D(64, 3, 3, activation=activation))
+    # TODO: not all layers have to have the same hyperparameters (activation,
+    # etc), so a generic constructor is not fit for all of them, ie., each
+    # layer can have different hyperparameters
+    model.add(Convolution2D(64, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(64, 3, 3, activation=activation))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+    model.add(Convolution2D(64, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
+    model.add(MaxPooling2D((2, 2), strides=(2, 2), border_mode=border_mode))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation=activation))
+    model.add(Convolution2D(128, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(128, 3, 3, activation=activation))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+    model.add(Convolution2D(128, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
+    model.add(MaxPooling2D((2, 2), strides=(2, 2), border_mode=border_mode))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation=activation))
+    model.add(Convolution2D(256, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation=activation))
+    model.add(Convolution2D(256, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(256, 3, 3, activation=activation))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+    model.add(Convolution2D(256, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
+    model.add(MaxPooling2D((2, 2), strides=(2, 2), border_mode=border_mode))
 
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation=activation))
+    model.add(Convolution2D(512, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation=activation))
+    model.add(Convolution2D(512, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
     model.add(ZeroPadding2D((1, 1)))
-    model.add(Convolution2D(512, 3, 3, activation=activation))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+    model.add(Convolution2D(512, 3, 3, activation=activation,
+                            init=initialization, border_mode=border_mode))
+    model.add(MaxPooling2D((2, 2), strides=(2, 2), border_mode=border_mode))
 
     model.compile(loss=objective, optimizer=optimizer)
 
