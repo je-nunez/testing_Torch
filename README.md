@@ -13,6 +13,8 @@ Follow the instructions at:
 # Useful links
 
 Web-site: [http://torch.ch](http://torch.ch)
+
 Repo: [https://github.com/torch/torch7](https://github.com/torch/torch7)
+
 Public documentation: [http://torch7.readthedocs.org/](http://torch7.readthedocs.org/)
 
